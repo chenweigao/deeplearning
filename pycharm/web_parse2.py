@@ -10,13 +10,19 @@ with open(file, 'r') as web_data:
         'body > div > div > div > div > div > div > img')
     rates = Soup.select('body > div > div > div > div > div > div > div > h4')
 
-    stars = Soup.select('body > div > div > div.col-md-9 > div > div > div > div.ratings > p:nth-child(2)')
+    stars = Soup.select(
+        'body > div > div > div.col-md-9 > div > div > div > div.ratings > p:nth-of-type(2)')
     # print(titles, sep='\n-----------------------------------\n ')
-
-for title,image,rate,star in zip(titles,images,rates,stars): 
+info = []
+for title, image, rate, star in zip(titles, images, rates, stars):
     data = {
         'title': title.get_text(),
         'image': image.get_text('src'),
         'rate': rate.get_text(),
-        'star': 
+        'star': len(star.find_all("span", 'glyphicon glyphicon-star'))
     }
+    info.append(data)
+
+for _ in info:
+    if(_['star'] >= 4):
+        print(_['title'])
