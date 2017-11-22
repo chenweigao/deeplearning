@@ -11,15 +11,15 @@ with open('C:/Users/Administrator/Videos/Plan-for-combating-master/week1/1_2/1_2
     # print(images,titles,pics,descs,rates,cates,sep='\n-----------------\n')
 
 
-for title,image,desc,rate,cate in zip(titles,images,descs,rates,cates):
+for title, image, desc, rate, cate in zip(titles, images, descs, rates, cates):
     data = {
-        'title':title.get_text(),
-        'rate':rate.get_text(),
-        'cate':list(cate.stripped_strings),
-        'image':image.get('src')
+        'title': title.get_text(),
+        'rate': rate.get_text(),
+        'cate': list(cate.stripped_strings),
+        'image': image.get('src')
     }
     info.append(data)
 
-for i in info: 
-    if float(i['rate'])>3:
-        print(i['title'],i['cate'])
+for i in info:
+    if float(i['rate']) > 3:
+        print(i['title'], i['cate'])
