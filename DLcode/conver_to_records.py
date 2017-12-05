@@ -41,7 +41,7 @@ def convert_to(dataset, name, directory):
   rows = images.shape[1]
   cols = images.shape[2]
   depth = images.shape[3]
-
+  #is images.shap[] a important attribution?
   filename = os.path.join(directory, name + '.tfrecords')
   print('Writing', filename)
   writer = tf.python_io.TFRecordWriter(filename)
