@@ -4,33 +4,30 @@ import numpy as np
 import argparse
 import imutils
 import cv2
+import datetime
+import os
 
-
+FILE_OUTPUT_PATH = "./"
 def show_image(image_name):
     cv2.imshow("test", image_name)
     cv2.waitKey(0)
-
+def save_image(image_name):
+    cv2.imwrite("{}.png".format(datetime.datetime.now().strftime('%Y-%m-%d')), image_name, [int(cv2.IMWRITE_PNG_COMPRESSION), 3])
+    # cv2.imwrite(os.path.join(FILE_OUTPUT_PATH, image_name), image_name, [int(cv2.IMWRITE_PNG_COMPRESSION), 3])    
+    cv2.waitKey(0)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--image", required=True,
                     help="path to the input image")
 args = vars(parser.parse_args())
-
 ANSWER_KEY = {0: 1, 1: 4, 2: 0, 3: 3, 4: 1}
 
-# filename = "2.png"
 image = cv2.imread(args["image"])
-# image = cv2.imread(filename)
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-
 edged = cv2.Canny(blurred, 75, 200)
 
-# show_image(edged)
-# for i,image in zip(range(3),(gray, blurred, edged)):
-#     cv2.imshow("image{}".format(int(i)),image)
-#     cv2.waitKey(0)
 cnts = cv2.findContours(
     edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 cnts = cnts[0] if imutils.is_cv2() else cnts[1]
@@ -58,6 +55,7 @@ thresh = cv2.threshold(
 # show_image(thresh)
 # https://www.wikiwand.com/zh-cn/%E5%A4%A7%E6%B4%A5%E7%AE%97%E6%B3%95
 
+# save_image(thresh)
 
 cnts = cv2.findContours(
     thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -76,7 +74,6 @@ for contour in cnts:
     # the weights and height should more than 20 pixels
     # append the correct contours into []
 image_contours = cv2.drawContours(paper, questioncnts, 3, (255, 0, 255))
-show_image(image_contours)
 questioncnts = contours.sort_contours(
     questioncnts, method="top-to-bottom")[0]
 # len(questioncnts) == 25
@@ -94,19 +91,19 @@ for(q, i) in enumerate(np.arange(0, len(questioncnts), 5)):
         if bubbled is None or total > bubbled[0]:
             bubbled = (total, j)
 
-# color = (0, 0, 255)
-# k = ANSWER_KEY[q]
-# if k == bubbled[1]:
-#     color = (0, 255, 0)
-#     correct += 1
+color = (0, 0, 255)
+k = ANSWER_KEY[q]
+if k == bubbled[1]:
+    color = (0, 255, 0)
+    correct += 1
 
-# cv2.drawContours(paper, [cnts[k]], -1, color, 3)
+cv2.drawContours(paper, [cnts[k]], -1, color, 3)
 
-# score = (correct / 5.0) * 100
-# print("[INFO] score : {:.2f}%".format(score))
+score = (correct / 5.0) * 100
+print("[INFO] score : {:.2f}%".format(score))
 
-# cv2.putText(paper, "{:.2f}%".format(
-#     score), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
-# cv2.imshow("Original", image)
-# cv2.imshow("Exam", paper)
-# cv2.waitKey(0)
+cv2.putText(paper, "{:.2f}%".format(
+    score), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
+cv2.imshow("Original", image)
+cv2.imshow("Exam", paper)
+cv2.waitKey(0)
