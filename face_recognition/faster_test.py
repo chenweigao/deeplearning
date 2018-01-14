@@ -36,11 +36,8 @@ while True:
 
             face_names = []
             for frame_face_encoding in face_encodings:
+                print(face_encoding)
                 match = face_recognition.compare_faces([face_encoding], frame_face_encoding)
-                if match[0]:
-                    name = face_correct_name
-                face_names.append(name)
-                   
 # print(face_correct_names, face_encodings)
 # weigao_image = face_recognition.load_image_file('./base_faces/weigao.JPG')
 # weigao_face_encoding = face_recognition.face_encodings(weigao_image)[0]

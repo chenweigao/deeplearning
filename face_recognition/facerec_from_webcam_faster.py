@@ -14,7 +14,7 @@ import cv2
 video_capture = cv2.VideoCapture(0)
 
 # Load a sample picture and learn how to recognize it.
-obama_image = face_recognition.load_image_file("IMG_0400.jpg")
+obama_image = face_recognition.load_image_file("./base_faces/weigao.JPG")
 obama_face_encoding = face_recognition.face_encodings(obama_image)[0]
 
 # Initialize some variables
@@ -43,10 +43,10 @@ while True:
         for face_encoding in face_encodings:
             # See if the face is a match for the known face(s)
             match = face_recognition.compare_faces([obama_face_encoding], face_encoding)
-            name = "Unknow"
+            name = "hanyishen"
 
             if match[0]:
-                name = "chen"
+                name = "weigao"
 
             face_names.append(name)
 
